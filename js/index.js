@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function renderBook(book) {
-        console.log(book)
         let li = document.createElement('li')
         li.innerHTML = `<a href="#${book.id}">${book.title}</a>`
 
@@ -27,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let p = document.createElement('p')
         let img = document.createElement('img')
         let button = document.createElement('button')
-        let ul = document.createElement('ul') ///universal var to access on userLikes
+        ul = document.createElement('ul') ///universal var to access on userLikes
         
         h2.innerText = book.title
         h2.id = book.id
@@ -43,22 +42,39 @@ document.addEventListener("DOMContentLoaded", function() {
         div.append(h2,img,p,ul, button)
         showPanelDiv.append(div);
 
+        
         /// show a list of people who liked it
-        // userLikes(book.users);
+        userLikes(book);
 
- 
+        button.addEventListener("click", () => {
+            let newUserLike = [...book.users,{"id":1, "username":"pouros"} ]
+            console.log(newUserLike)
+            fetch(booksUrl + book.id, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                users: newUserLike
+                })
+             })
+        })
+    
 
     }
 
-    function userLikes(users) {
-        users.forEach (user => {  
+    function userLikes(book) {
+        book.users.forEach (function(user) {  
 
-            // let liLikes = document.createElement('li');
-            // liLikes.innerText = user.username;
-            // ul.append(liLikes);
+            let liLikes = document.createElement('li');
+            liLikes.innerText = user.username;
+            ul.append(liLikes);
             });
     
     }
+
+    // function likeBook(book){
+    //     console.log("hello 2")
+
+    // }
   
 
 
