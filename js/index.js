@@ -44,17 +44,18 @@ document.addEventListener("DOMContentLoaded", function() {
         showPanelDiv.append(div);
 
         /// show a list of people who liked it
-        userLikes(book.users);
+        // userLikes(book.users);
 
  
 
     }
 
     function userLikes(users) {
-        book.users.forEach (user => {     
-            let liLikes = document.createElement('li');
-            liLikes.innerText = user.username;
-            ul.append(liLikes);
+        users.forEach (user => {  
+
+            // let liLikes = document.createElement('li');
+            // liLikes.innerText = user.username;
+            // ul.append(liLikes);
             });
     
     }
