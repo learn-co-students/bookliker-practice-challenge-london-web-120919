@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let p = document.createElement('p')
         let img = document.createElement('img')
         let button = document.createElement('button')
-        ul = document.createElement('ul') ///universal var to access on userLikes
+        let ul = document.createElement('ul') ///universal var to access on userLikes
         
         h2.innerText = book.title
         h2.id = book.id
@@ -44,24 +44,38 @@ document.addEventListener("DOMContentLoaded", function() {
 
         
         /// show a list of people who liked it
-        userLikes(book);
+        userLikes(book,ul);
 
-        button.addEventListener("click", () => {
+        // button.addEventListener("click",config(book))
+        button.addEventListener("click", (e) => {
+            config(book)
+                .then(book => addLikerName(book,ul))
+        })
+
+    }
+    function addLikerName(book,ul) {
+            let liLikes = document.createElement('li');
+            liLikes.innerText = book.users.slice(-1).pop().username;
+            ul.append(liLikes);
+    }
+
+
+    function config(book){
             let newUserLike = [...book.users,{"id":1, "username":"pouros"} ]
-            console.log(newUserLike)
-            fetch(booksUrl + book.id, {
+            return fetch(booksUrl + book.id, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                 users: newUserLike
                 })
              })
-        })
-    
-
+             .then(response => response.json())
+            // .then(book => renderBook(book))
     }
 
-    function userLikes(book) {
+
+
+    function userLikes(book,ul) {
         book.users.forEach (function(user) {  
 
             let liLikes = document.createElement('li');
@@ -70,13 +84,6 @@ document.addEventListener("DOMContentLoaded", function() {
             });
     
     }
-
-    // function likeBook(book){
-    //     console.log("hello 2")
-
-    // }
-  
-
 
 
     fetchBooks()
